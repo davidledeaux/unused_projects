@@ -25,9 +25,10 @@ projects = rally.get("Project")
 for project in projects:
     in_use = False
     for work_item_type in work_item_types:
-        artifacts = rally.get(work_item_type, project=project.Name, query="(LastUpdateDate >= today-{lookback})".format(lookback=lookback))
-        if artifacts.resultCount > 0:
-            in_use = True        
+        if in_use == False:
+            artifacts = rally.get(work_item_type, project=project.Name, query="(LastUpdateDate >= today-{lookback})".format(lookback=lookback))
+            if artifacts.resultCount > 0:
+                in_use = True        
 
     if in_use == False:
         print ("{object_id}: {name} has no modifications within the last {lookback} days".format(object_id=project.ObjectID, name=project.Name, lookback=lookback))
